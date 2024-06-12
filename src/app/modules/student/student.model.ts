@@ -95,4 +95,4 @@ const studentSchema = new Schema<TStudent>({
   isDeleted: { type: Boolean, default: false },
 });
 
-const Student = model<TStudent>("Student", studentSchema);
+export const Student = model<TStudent>("Student", studentSchema);
