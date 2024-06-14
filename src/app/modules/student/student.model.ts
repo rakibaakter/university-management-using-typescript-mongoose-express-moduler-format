@@ -74,15 +74,32 @@ const localGuradianSchema = new Schema<TLocalGuardian>({
 });
 
 const studentSchema = new Schema<TStudent>({
-  id: { type: String, required: true },
+  id: { type: String, required: [true, "ID is required"], unique: true },
   name: { type: userNameSchema, required: [true, "Name is required"] },
-  gender: { type: String, enum: ["male", "female", "other"] },
+  gender: {
+    type: String,
+    enum: {
+      values: ["male", "female", "other"],
+      message:
+        '{VALUE} is not valid, it must be one of "male", "female", "other" ',
+    },
+    required: [true, "Gender is required"],
+  },
   dateOfBirth: { type: String },
-  email: { type: String, required: true },
-  contactNo: { type: String, required: true },
-  emergencyContactNo: { type: String, required: true },
-  presentAddress: { type: String, required: true },
-  permanentAddress: { type: String, required: true },
+  email: { type: String, required: [true, "email is required"], unique: true },
+  contactNo: { type: String, required: [true, "Contact number is required"] },
+  emergencyContactNo: {
+    type: String,
+    required: [true, "Emergency ContactNo number is required"],
+  },
+  presentAddress: {
+    type: String,
+    required: [true, "Present Address number is required"],
+  },
+  permanentAddress: {
+    type: String,
+    required: [true, "permanentAddress number is required"],
+  },
   guardian: {
     type: guardianSchema,
     required: [true, "Guardian information is required"],
