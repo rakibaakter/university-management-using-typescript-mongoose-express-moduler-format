@@ -1,12 +1,14 @@
 import { Schema, model } from "mongoose";
 import {
+  StudentMethods,
+  StudentModel,
   TGuardian,
   TLocalGuardian,
   TStudent,
   TUserName,
 } from "./student.interface";
 
-const userNameSchema = new Schema<TUserName>({
+const userNameSchema = new Schema<TUserName , StudentModel, StudentMethods>({
   firstName: {
     type: String,
     required: [true, "First Name is required"],
@@ -112,4 +114,10 @@ const studentSchema = new Schema<TStudent>({
   isDeleted: { type: Boolean, default: false },
 });
 
-export const Student = model<TStudent>("Student", studentSchema);
+
+export const Student = model<TStudent, StudentModel>("Student", studentSchema);
+
+studentSchema.methods.isStudentExist = async function (id:string) {
+  const existingStudent  = await Student.findOne({id});
+  return existingStudent;
+}

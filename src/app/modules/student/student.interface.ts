@@ -1,3 +1,5 @@
+import { Model } from "mongoose";
+
 //  name
 export type TUserName = {
   firstName: string;
@@ -39,3 +41,11 @@ export type TStudent = {
   profileImage?: string;
   isDeleted: boolean;
 };
+
+//instance methods
+export type StudentMethods = {
+  isStudentExist(id : string) : Promise<TStudent | null>
+}
+
+// Create a new Model type that knows about StudentMethods
+export type StudentModel = Model<TStudent, {}, StudentMethods>;

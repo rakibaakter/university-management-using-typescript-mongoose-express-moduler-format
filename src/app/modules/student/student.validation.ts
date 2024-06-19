@@ -41,7 +41,7 @@ const studentValidationSchema = z.object({
   permanentAddress: z.string(),
   guardian: guardianSchema,
   localGuardian: localGuardianSchema,
-  profileImg: z.string(),
+  profileImage: z.string(),
   isDeleted: z.boolean(),
 });
 
