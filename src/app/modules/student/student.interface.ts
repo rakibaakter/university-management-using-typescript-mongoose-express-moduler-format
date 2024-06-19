@@ -3,7 +3,7 @@ import { Model } from "mongoose";
 //  name
 export type TUserName = {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
 };
 
