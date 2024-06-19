@@ -7,8 +7,10 @@ import {
   TStudent,
   TUserName,
 } from "./student.interface";
+import bcrypt from "bcrypt";
+import config from "../../config";
 
-const userNameSchema = new Schema<TUserName , StudentModel, StudentMethods>({
+const userNameSchema = new Schema<TUserName, StudentModel, StudentMethods>({
   firstName: {
     type: String,
     required: [true, "First Name is required"],
@@ -77,6 +79,11 @@ const localGuradianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent>({
   id: { type: String, required: [true, "ID is required"], unique: true },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    maxlength: [20, "Password can not be more than 20 letters"],
+  },
   name: { type: userNameSchema, required: [true, "Name is required"] },
   gender: {
     type: String,
@@ -114,10 +121,20 @@ const studentSchema = new Schema<TStudent>({
   isDeleted: { type: Boolean, default: false },
 });
 
+// middlewares | hook (pre, post)
+studentSchema.pre("save", async function (next) {
+  const student = this;
+  student.password = await bcrypt.hash(
+    student.password,
+    Number(config.bcryptSaltRound)
+  );
+  next();
+});
+
+// creating instance method
+studentSchema.methods.isStudentExist = async function (id: string) {
+  const existingStudent = await Student.findOne({ id });
+  return existingStudent;
+};
 
 export const Student = model<TStudent, StudentModel>("Student", studentSchema);
-
-studentSchema.methods.isStudentExist = async function (id:string) {
-  const existingStudent  = await Student.findOne({id});
-  return existingStudent;
-}
