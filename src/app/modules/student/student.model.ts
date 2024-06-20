@@ -80,10 +80,16 @@ const localGuradianSchema = new Schema<TLocalGuardian>({
 const studentSchema = new Schema<TStudent>(
   {
     id: { type: String, required: [true, "ID is required"], unique: true },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-      maxlength: [20, "Password can not be more than 20 letters"],
+    // password: {
+    //   type: String,
+    //   required: [true, "Password is required"],
+    //   maxlength: [20, "Password can not be more than 20 letters"],
+    // },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, "user id is required"],
+      unique: true,
+      ref: "User",
     },
     name: { type: userNameSchema, required: [true, "Name is required"] },
     gender: {
@@ -136,20 +142,20 @@ studentSchema.virtual("fullName").get(function () {
 });
 
 // middlewares | hook pre for save
-studentSchema.pre("save", async function (next) {
-  const student = this;
-  student.password = await bcrypt.hash(
-    student.password,
-    Number(config.bcryptSaltRound)
-  );
-  next();
-});
+// studentSchema.pre("save", async function (next) {
+//   const student = this;
+//   student.password = await bcrypt.hash(
+//     student.password,
+//     Number(config.bcryptSaltRound)
+//   );
+//   next();
+// });
 
-// post save middleware / hook
-studentSchema.post("save", function (doc, next) {
-  doc.password = "";
-  next();
-});
+// // post save middleware / hook
+// studentSchema.post("save", function (doc, next) {
+//   doc.password = "";
+//   next();
+// });
 
 // query middleware
 studentSchema.pre("find", function (next) {
