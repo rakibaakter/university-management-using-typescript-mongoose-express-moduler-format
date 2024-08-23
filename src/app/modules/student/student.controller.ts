@@ -1,5 +1,4 @@
 import { studentServices } from "./student.service";
-import studentValidationSchema from "./student.validation";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchSync";
