@@ -7,8 +7,9 @@ import {
   TStudent,
   TUserName,
 } from "./student.interface";
-import bcrypt from "bcrypt";
-import config from "../../config";
+import { AcademicSemester } from "../academicSemester/academicSemester.model";
+// import bcrypt from "bcrypt";
+// import config from "../../config";
 
 const userNameSchema = new Schema<TUserName, StudentModel, StudentMethods>({
   firstName: {
@@ -125,6 +126,7 @@ const studentSchema = new Schema<TStudent>(
       required: [true, " Local guardian information is required"],
     },
     profileImage: { type: String },
+    academicSemester: { type: Schema.Types.ObjectId, ref: AcademicSemester },
     isDeleted: { type: Boolean, default: false },
   },
   {
