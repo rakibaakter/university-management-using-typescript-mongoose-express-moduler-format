@@ -156,4 +156,10 @@ studentSchema.methods.isStudentExist = async function (id: string) {
   return existingStudent;
 };
 
+//creating a custom static method
+// studentSchema.statics.isUserExists = async function (id: string) {
+//   const existingUser = await Student.findOne({ id });
+//   return existingUser;
+// };
+
 export const Student = model<TStudent, StudentModel>("Student", studentSchema);
