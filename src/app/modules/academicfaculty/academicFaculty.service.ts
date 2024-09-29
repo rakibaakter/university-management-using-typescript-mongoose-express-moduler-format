@@ -23,6 +23,7 @@ const updateSingleAcadmicFacultyIntoDB = async (
   const result = await AcademicFaculty.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   });
+  return result;
 };
 
 export const academicFacultyServices = {
