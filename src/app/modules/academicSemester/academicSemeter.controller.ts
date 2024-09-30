@@ -43,10 +43,11 @@ const getSingleAcademicSemesterById = catchAsync(async (req, res, next) => {
 const updateAcademicSemesterById = catchAsync(async (req, res, next) => {
   const { semesterId } = req.params;
   const payload = req.body;
-  const result = academicSemesterServices.updateSemesterByIDIntoDB(
+  const result = await academicSemesterServices.updateSemesterByIDIntoDB(
     semesterId,
     payload
   );
+  console.log("contoller", result);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

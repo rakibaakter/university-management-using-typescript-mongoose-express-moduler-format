@@ -37,6 +37,7 @@ const updateSemesterByIDIntoDB = async (
   const result = await AcademicSemester.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   });
+  console.log("service", result);
   return result;
 };
 

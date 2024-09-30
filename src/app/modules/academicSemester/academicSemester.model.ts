@@ -33,18 +33,22 @@ academicSemesterSchema.pre("save", async function (next) {
 
 // Pre-update hook to check if the semester already exists
 academicSemesterSchema.pre("findOneAndUpdate", async function (next) {
+  const query = this.getQuery();
   const update = this.getUpdate() as Partial<TAcademicSemester>;
 
-  if (update.year && update.name) {
-    const isSemesterExist = await AcademicSemester.findOne({
-      year: update.year,
-      name: update.name,
-    });
-    if (isSemesterExist) {
-      throw new Error("Semester already exists for this year");
-    }
+  const isAcademicSemesterExist = await AcademicSemester.findOne(query);
+
+  if (!isAcademicSemesterExist) {
+    throw new Error("This academic semester does not exists");
   }
 
+  const isSemesterExist = await AcademicSemester.findOne({
+    year: update.year,
+    name: update.name,
+  });
+  if (isSemesterExist) {
+    throw new Error("Semester already exists for this year");
+  }
   next();
 });
 
