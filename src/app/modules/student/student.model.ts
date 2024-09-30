@@ -7,6 +7,8 @@ import {
   TStudent,
   TUserName,
 } from "./student.interface";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 // import { AcademicSemester } from "../academicSemester/academicSemester.model";
 // import bcrypt from "bcrypt";
 // import config from "../../config";
@@ -144,15 +146,28 @@ studentSchema.virtual("fullName").get(function () {
 });
 
 // query middleware
-studentSchema.pre("find", function (next) {
-  this.find({ isDeleted: { $ne: true } });
+studentSchema.pre("find",  function (next) {
+   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
 studentSchema.pre("findOne", function (next) {
-  this.findOne({ isDeleted: { $ne: true } });
+   this.findOne({ isDeleted: { $ne: true } });
   next();
 });
+studentSchema.pre("findOneAndUpdate",async function (next) {
+  const query = this.getQuery();
+ 
+  const isStudentExist = await Student.findOne(query);
+  console.log(isStudentExist);
+  
+  if(!isStudentExist){
+    throw new AppError(httpStatus.NOT_FOUND, "Student do not exists")
+  }
+  next();
+});
+
+
 
 // creating instance method
 studentSchema.methods.isStudentExist = async function (id: string) {
