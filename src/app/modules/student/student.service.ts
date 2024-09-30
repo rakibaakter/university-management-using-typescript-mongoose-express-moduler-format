@@ -1,4 +1,3 @@
-import { path } from "path";
 import { TStudent } from "./student.interface";
 import { Student } from "./student.model";
 

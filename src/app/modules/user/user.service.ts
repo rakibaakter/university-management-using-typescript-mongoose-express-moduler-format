@@ -13,7 +13,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
   //   const student = new Student(payload); //create an instance
   //   if (await student.isStudentExist(payload.id)) {
-  //     throw new Error("student already exists");
+  //     throw new AppError("student already exists");
   //   }
 
   //   const result = await student.save(); // built in instance method
@@ -44,7 +44,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
     return newStudent;
   } else {
-    throw new Error();
+    throw new AppError();
   }
 };
 
