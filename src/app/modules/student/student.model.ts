@@ -7,7 +7,7 @@ import {
   TStudent,
   TUserName,
 } from "./student.interface";
-import { AcademicSemester } from "../academicSemester/academicSemester.model";
+// import { AcademicSemester } from "../academicSemester/academicSemester.model";
 // import bcrypt from "bcrypt";
 // import config from "../../config";
 
@@ -126,7 +126,11 @@ const studentSchema = new Schema<TStudent>(
       required: [true, " Local guardian information is required"],
     },
     profileImage: { type: String },
-    academicSemester: { type: Schema.Types.ObjectId, ref: AcademicSemester },
+    academicSemester: { type: Schema.Types.ObjectId, ref: "AcademicSemester" },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicDepartment",
+    },
     isDeleted: { type: Boolean, default: false },
   },
   {
