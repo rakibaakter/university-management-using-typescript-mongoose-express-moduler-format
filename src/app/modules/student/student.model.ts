@@ -159,7 +159,7 @@ studentSchema.pre("findOneAndUpdate",async function (next) {
   const query = this.getQuery();
  
   const isStudentExist = await Student.findOne(query);
-  console.log(isStudentExist);
+  
   
   if(!isStudentExist){
     throw new AppError(httpStatus.NOT_FOUND, "Student do not exists")
