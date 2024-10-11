@@ -32,10 +32,13 @@ const getAllStudentFromDB = async (query : Record<string, unknown>) => {
     $or : searchableField.map((field)=>({
       [field] : {$regex : searchTerm, $options : 'i'}
     }))
+  }).populate("academicSemester").populate({
+    path: "academicDepartment",
+    populate: "academicFaculty",
   });
 
   // filtering
-  const excludeFields = ['searchTerm','sort', 'limit'];
+  const excludeFields = ['searchTerm','sort', 'limit', 'page', 'fields'];
   excludeFields.forEach(elem =>(delete queryObj[elem]))
 
   const filterQuery = searchQuery.find(queryObj)
@@ -51,15 +54,34 @@ const sortedQuery =   filterQuery.sort(sort);
 // limit
 let limit = 1;
 if(query.limit){
-  limit = query.limit as number;
+  limit = Number(query.limit) ;
 }
 
-const limitedQuery =  await sortedQuery.limit(limit).populate("academicSemester").populate({
-  path: "academicDepartment",
-  populate: "academicFaculty",
-});
+// paginatio with limit
+let page = 1;
+let skip = 0;
 
-  return limitedQuery;
+if(query.page){
+  page = Number(query.page);
+  skip = (page - 1)*limit
+}
+
+const paginateQuery = sortedQuery.skip(skip)
+
+const limitedQuery =   paginateQuery.limit(limit)
+
+// fields
+let fields = '-__v'; 
+
+if (query.fields) {
+  fields = (query.fields as string).split(',').join(' ');
+
+}
+
+const fieldQuery = await limitedQuery.select(fields);
+
+return fieldQuery;
+
 };
 
 const getSingleStudentByIDFromDB = async (id: string) => {
